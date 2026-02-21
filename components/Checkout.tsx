@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-const API_BASE = "https://vibecraft-3ovd.onrender.com";
+const API_BASE = "https://vibecraft-amiw.onrender.com";
 
 const Checkout: React.FC = () => {
   const { cart, clearCart } = useCart();

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCraft | Urban Earth Luxury</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- UI Font (Clean & Sharp) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Brand Font (Luxury Headlines) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F2F1F',
+                        secondary: '#EDE3D6',
+                        accent: '#1C4A2F',
+                        dark: '#0B1F14',
+                        'luxury-gray': '#F7F5F1',
+                    },
+                    fontFamily: {
+                        ui: ['Inter', 'sans-serif'],
+                        brand: ['Cormorant Garamond', 'serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fade-in 0.6s ease-out forwards',
+                        'slide-up': 'slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        'fade-in': {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        'slide-up': {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Default UI font */
+            background-color: #EDE3D6;
+            color: #0B1F14;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .page-enter {
+            animation: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .premium-link {
+          position: relative;
+          display: inline-block;
+        }
+
+        .premium-link::after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          transform: scaleX(0);
+          height: 1px;
+          bottom: -4px;
+          left: 0;
+          background-color: currentColor;
+          transform-origin: bottom right;
+          transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .premium-link:hover::after {
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+
+        .premium-btn {
+          position: relative;
+          z-index: 1;
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          overflow: hidden;
+        }
+
+        .premium-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 1px solid currentColor;
+          opacity: 0;
+          transform: scale(1);
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          z-index: -1;
+        }
+
+        .premium-btn:hover::before {
+          opacity: 0.3;
+          transform: scale(1.05, 1.15);
+        }
+
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #F7F5F1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #0F2F1F;
+          border-radius: 10px;
+        }
+    </style>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="antialiased font-ui">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

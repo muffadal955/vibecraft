@@ -7,6 +7,8 @@ declare global {
   }
 }
 
+const API_BASE = "https://vibecraft-3ovd.onrender.com";
+
 const Checkout: React.FC = () => {
   const { cart, clearCart } = useCart();
 
@@ -15,16 +17,31 @@ const Checkout: React.FC = () => {
     0
   );
 
+  /* ---------------- PAYMENT HANDLER ---------------- */
+
   const handlePayment = async () => {
+    if (subtotal <= 0) {
+      alert("Invalid order amount.");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:5000/create-order", {
+      // 1️⃣ Create order on backend
+      const response = await fetch(`${API_BASE}/create-order`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ amount: subtotal }),
       });
 
+      if (!response.ok) {
+        throw new Error("Failed to create order");
+      }
+
       const order = await response.json();
 
+      // 2️⃣ Open Razorpay popup
       const options = {
         key: "rzp_test_SIQl6uuIVxVyXy",
         amount: order.amount,
@@ -35,32 +52,42 @@ const Checkout: React.FC = () => {
         theme: { color: "#0F2F1F" },
 
         handler: async function (response: any) {
-          const verifyRes = await fetch(
-            "http://localhost:5000/verify-payment",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(response),
+          try {
+            const verifyRes = await fetch(
+              `${API_BASE}/verify-payment`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(response),
+              }
+            );
+
+            if (!verifyRes.ok) {
+              throw new Error("Verification failed");
             }
-          );
 
-          const verifyData = await verifyRes.json();
+            const verifyData = await verifyRes.json();
 
-          if (verifyData.status === "success") {
-            alert("Payment Successful!");
-            clearCart();
-            window.location.hash = "home";
-          } else {
-            alert("Payment Verification Failed");
+            if (verifyData.status === "success") {
+              alert("Payment Successful!");
+              clearCart();
+              window.location.hash = "home";
+            } else {
+              alert("Payment Verification Failed");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            alert("Payment verification failed.");
           }
         },
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
+
     } catch (error) {
-      console.error(error);
-      alert("Payment failed. Try again.");
+      console.error("Payment error:", error);
+      alert("Payment failed. Please try again.");
     }
   };
 
